@@ -1,0 +1,103 @@
+.list-message-user > .my-chat-box > .chat-input-wrapper {
+    position: absolute;
+    height: 36px;
+    top: 318px;
+    padding: 0px 45px;
+    background: rgb(0, 21, 41);
+}
+.list-message-user {
+    height: 400px !important;
+    width: 100%;
+    position: relative;
+    top: 45px;
+    overflow: hidden;
+}
+.my-chat-box .message-list-wrapper {
+    background: rgb(0, 21, 41);
+    min-height: 200px;
+}
+.my-chat-box .emoji-box .emoji-icon {
+    width: 24px;
+    height: 24px;
+    left: 8px;
+    bottom: 8px;
+}
+.my-chat-box .submit-box {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    background: linear-gradient(120deg,#3bacee,#32c4d3);
+    box-shadow: -3px 2px 2px rgba(18,111,112,.2);
+    border-radius: 50%;
+}
+.my-chat-box .chat-textarea-box {
+    width: 100%;
+    height: 28px !important;
+    position: relative;
+    min-height: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.my-chat-box .chat-input-wrapper .chat-input {
+    width: 100%;
+    margin: 0px;
+    padding: 0px 10px;
+    color: #333;
+    position: absolute;
+    z-index: 9;
+    height: 28px;
+    font-size: 12px;
+    line-height: 28px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: 4px;
+    background-color: #edf5f8;
+    border: none;
+    margin: 4px 0;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+}
+.massage-container {
+    width: 250px !important;
+    height: 320px !important;
+    position: absolute !important;
+    top: -10px !important;
+    bottom: 0px !important;
+    background: transparent !important;
+}
+.my-chat-box .message-item .message-item-content {
+    padding: 4px !important;
+    line-height: 18px !important;
+    min-height: 28px !important;
+    font-size: 14px;
+}
+.my-chat-box .message-item .message-item-content:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 8px !important;
+    width: 0;
+    height: 0;
+}
+.my-chat-box .message-item .message-item-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    position: absolute;
+}
+.my-chat-box .emoji-picker-content .emoji-item {
+    float: left;
+    width: 28px;
+    height: 28px;
+    padding: 0px;
+    font-size: 22px;
+    margin: 0px 4px;
+    line-height: 28px;
+    cursor: pointer;
+}

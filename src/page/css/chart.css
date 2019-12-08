@@ -1,0 +1,46 @@
+.chart-container {
+    height: 400px;
+    width: 250px;
+    border-radius: 4px;
+    position: relative;
+}
+.close-chart {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    color: rgba(255, 255, 255, 0.65);
+}
+.list-item {
+    color: rgba(255, 255, 255, 0.65) !important;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+}
+.search-message {
+    justify-content: space-between;
+    position: absolute;
+    display: flex;
+    width: 100%;
+    bottom: 0;
+    padding: 0 8px 8px 8px;
+    height: 28px;
+    line-height: 28px;
+}
+.list-item span {
+
+}
+.list-item img {
+    width: 16px;
+    padding-right: 16px;
+}
+.list-item .list-left {
+
+}
+#root > section > div > div > div.ant-tabs-content.ant-tabs-content-animated.ant-tabs-top-content {
+}
+
+ant-tabs .ant-tabs-top-content, .ant-tabs .ant-tabs-bottom-content {
+
+}

@@ -1,7 +1,15 @@
+
 .App {
   text-align: center;
+  height: 100%;
 }
 
+#app {
+  height: 100%;
+}
+.ant-layout {
+  height: 100%;
+}
 .App-logo {
   height: 40vmin;
 }
@@ -19,4 +27,7 @@
 
 .App-link {
   color: #09d3ac;
+}
+.ant-drawer-body {
+  height: calc(100% - 55px)
 }
