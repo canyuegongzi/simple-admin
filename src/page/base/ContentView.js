@@ -190,7 +190,6 @@ class ContentView extends Component {
                     alias: item.name,
                     state: "ENABLE",
                     sort: 0,
-                    // value: "http://canyuegongzi.xyz/simple-file-center-web/#/fileManage/categoryList?hideMenus=true",
                     value: item.value,
                     type: item.value ? 'admin' : 'system',
                     discription: item.desc,
