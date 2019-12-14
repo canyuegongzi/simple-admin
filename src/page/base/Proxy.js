@@ -24,7 +24,7 @@ class Proxy extends React.Component {
     }
     _pushUrl = (msg) => {
         console.log(msg);
-        if (msg.type === 'admin') {
+        if (/^(http:\/\/|https:\/\/)/.test(msg.value)) {
             this.setState({
                 url: msg.value
             });

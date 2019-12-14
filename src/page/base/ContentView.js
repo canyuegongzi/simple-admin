@@ -4,7 +4,7 @@ import '../../style/content/index.css'
 import Proxy from "./Proxy";
 import io from 'socket.io-client';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Route, HashRouter } from "react-router-dom";
+import {Route, HashRouter, Redirect} from "react-router-dom";
 import Nav from "../component/Nav";
 import {isLogin} from "../component/Routes";
 import { MimeStorage} from "../../scripts/localStorage";
@@ -12,6 +12,7 @@ import {$get} from "../../scripts/http";
 import ListNews from "../component/ListNews";
 import {parseTime} from "../../scripts/untils";
 import Chart from "./Chart";
+import Analyze from "./Analyze";
 const { Header, Sider, Content } = Layout;
 
 
@@ -319,7 +320,10 @@ class ContentView extends Component {
                         }}>
                             <Scrollbars>
                             <HashRouter>
-                                    <Route component={Proxy} onEnter={isLogin}/>
+                                    {/*<Route component={Analyze} exact path="/"  onEnter={isLogin}/>*/}
+                                    <Route component={Analyze} path="/analyze"  onEnter={isLogin}/>
+                                    <Route component={Proxy} path="/admin" onEnter={isLogin}/>
+                                    <Redirect to="/analyze" />
                             </ HashRouter>
                             </Scrollbars>
                         </Content>

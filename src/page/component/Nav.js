@@ -13,6 +13,7 @@ class Nav extends Component {
             selectedKeys: [],
             menus: []
         };
+        this.timer = null
     }
     toggle = () => {
         this.setState({
@@ -105,7 +106,18 @@ class Nav extends Component {
         if (location.pathname === item.name) {
             return;
         } else {
-            history.push(item.name);
+            if (/^(http:\/\/|https:\/\/)/.test(item.value)) {
+                history.push('/admin' + item.name);
+                if (this.timer) {
+                    clearTimeout(this.timer)
+                }
+                setTimeout(() => {
+                    emitter.emit("iframeChange",item);
+                }, 500)
+            } else {
+                history.push(item.name);
+            }
+
         }
     };
     render() {
