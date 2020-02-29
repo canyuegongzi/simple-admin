@@ -26,7 +26,7 @@ class Chart extends React.Component {
             // 当前用户的消息列表
             currentMessageList: [
                   {
-                    timestamp: 1575186582019,
+                    timestamp: new Date().getTime(),
                     userInfo: {
                         address: "地址",
                         age: "20",
@@ -59,13 +59,14 @@ class Chart extends React.Component {
                         message: ''
                     }
                 });
-                this._successEmitMessage(this.currentMessageInfo);
+                // this._successEmitMessage(this.currentMessageInfo);
             } else {
-                this._failEmitMessage(this.currentMessageInfo)
+                // this._failEmitMessage(this.currentMessageInfo)
             }
 
         });
         this.socket.on('getMessage', (data) => {
+            console.log(data)
             this._getMessageInfo(data)
         });
     }
@@ -91,7 +92,7 @@ class Chart extends React.Component {
      * @param val
      * @private
      */
-    _getMessageInfo = (data) => {
+    _getMessageInfo = async (data) => {
         const userList = this.userList;
         const currentUser = userList.find((item, index) => {
             return Number(item.userId) == Number(data.message.from)
@@ -102,14 +103,11 @@ class Chart extends React.Component {
             value: data.message.message
         };
         let list = [];
-        if (this.state.currentMessageList.length) {
-            list = [...this.state.currentMessageList];
-        } else {
-            list = []
-        }
-        // const {currentMessageList = []} = this.state;
+        const {currentMessageList = []} = this.state;
+        list = [...currentMessageList];
         list.push(message);
-        this.setState({currentMessageList: list, timestamp: new Date().getTime()});
+        console.log(list);
+        await this.setState({currentMessageList: list, timestamp: message.timestamp});
     };
 
     /**
@@ -198,14 +196,22 @@ class Chart extends React.Component {
             userId: this.user.id,
             message: val.value,
         };
-        this.socket.emit('sendMessage', info);
+        console.log(info);
+        this.socket.emit('sendMessage', info, (data) => {
+            console.log(data)
+            let list = [];
+            const {currentMessageList = []} = this.state;
+            list = [...currentMessageList];
+            list.push(this.currentMessageInfo);
+            console.log(list);
+            this.setState({currentMessageList: list, timestamp:  new Date().getTime()});
+        });
     };
 
     /**
      * 消息发送成功回调
      */
     _successEmitMessage = (v) => {
-        console.log(44444);
         const {value} = v;
         if (!value) return;
         let list = [];

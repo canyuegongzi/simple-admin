@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ContentIframe from "./ContentIframe";
 import emitter from "../../scripts/events";
+import SimpleChart from "../chart/Index"
 class Analyze extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +23,7 @@ class Analyze extends React.Component {
                 width: '100%',
             }}>
                 <span>分析页面</span>
+                {/*<SimpleChart></SimpleChart>*/}
             </div>
         );
     }

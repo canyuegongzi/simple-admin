@@ -1,0 +1,87 @@
+/**
+    容器
+ */
+.chart-container {
+    width: 300px;
+    height: 450px;
+    border: 1px solid #cdcdcd;
+    background: #001529;
+    z-index: 9999;
+}
+.ant-tabs .ant-tabs-top-content.ant-tabs-content-animated, .ant-tabs .ant-tabs-bottom-content.ant-tabs-content-animated {
+    margin-top: -16px;
+}
+.list-container {
+
+}
+.list-container .list-item {
+    justify-content: start;
+    align-items: center;
+}
+.list-container .list-item .left {
+    width: 28px;
+    height: 28px;
+}
+.list-container .list-item .right {
+    width: 75%;
+    padding-left: 8px;
+}
+.list-container .list-item .left img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    padding-right: 0;
+}
+.list-container .list-item .message-top {
+    display: flex;
+    justify-content: space-between;
+}
+.list-container .list-item .message-top p {
+    margin-bottom: 0;
+}
+.list-container .list-item .message-bottom {
+
+}
+.ant-page-header-heading-title {
+    color: #cdcdcd !important;
+}
+.ant-page-header-ghost {
+    background-color: inherit;
+    padding: 8px !important;
+}
+.ant-page-header-back-button {
+    color: #cdcdcd !important;
+}
+.ant-page-header-heading-title {
+    font-size: 16px !important;
+    width: 75% !important;
+    text-align: center !important;
+}
+.ant-page-header-heading {
+    display: flex !important;
+}
+.am-list-view-scrollview {
+    width: 100% !important;
+}
+.chart-container .aam-list-view-scrollview {
+
+}
+.message-room-container {
+    padding: 0 8px 0 8px;
+}
+.room-container {
+    margin-top: -21px;
+}
+.search-item {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+}
+.search-item .search-input {
+    margin-right: 8px;
+    width: 70%;
+}
+.list-container .list-item .message-right {
+    width: 100% !important;
+    padding-left: 8px;
+}

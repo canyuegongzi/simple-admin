@@ -1,0 +1,47 @@
+.message-color {
+    color: #ffffff;
+}
+.message-container {
+    padding: 0 8px 0 8px;
+}
+.message-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 14px;
+    position: relative;
+}
+.message-list-item .user-icon {
+
+}
+.message-list-item .user-icon img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    padding-right: 0;
+    position: absolute;
+    top: 0;
+}
+.message-info {
+    border: 1px solid #cdcdcd;
+    background: #ffffff;
+    color: #000c17;
+    border-radius: 2px;
+    display: block;
+    min-height: 32px;
+    margin: 0 40px;
+}
+.message-list-item .self-user-icon img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    padding-right: 0;
+    top: 0;
+}
+.message-list-item-self {
+    display: flex;
+    justify-content: flex-end;
+}
+.message-info-self {
+    margin: 0 12px 0 0;
+}

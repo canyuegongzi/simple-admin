@@ -20,12 +20,12 @@ export default class ChartMessageList extends React.Component {
     setScrollTop = () => {
         this.chat.refs.message.setScrollTop(1200);  //set scrollTop position
     };
-    sendMessage = (v) => {
+    sendMessage = async (v) => {
         console.log(v);
         const {value} = v;
         if (!value) return;
-        this.props.getSendMessage(v);
-        this.setState({ timestamp: new Date().getTime(), inputValue: ''});
+        await this.props.getSendMessage(v);
+        await this.setState({ timestamp: new Date().getTime(), inputValue: ''});
 
     };
     _onScrollFun = (e) => {

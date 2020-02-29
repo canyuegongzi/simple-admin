@@ -2,7 +2,6 @@ import {Layout, Menu, Icon, Avatar, Badge, Drawer, Dropdown, notification} from 
 import React, { Component } from 'react';
 import '../../style/content/index.css'
 import Proxy from "./Proxy";
-import io from 'socket.io-client';
 import { Scrollbars } from 'react-custom-scrollbars';
 import {Route, HashRouter, Redirect} from "react-router-dom";
 import Nav from "../component/Nav";
@@ -10,9 +9,9 @@ import {isLogin} from "../component/Routes";
 import { MimeStorage} from "../../scripts/localStorage";
 import {$get} from "../../scripts/http";
 import ListNews from "../component/ListNews";
-import {parseTime} from "../../scripts/untils";
 import Chart from "./Chart";
 import Analyze from "./Analyze";
+import SimpleChart from "../chart/Index"
 const { Header, Sider, Content } = Layout;
 
 
@@ -27,10 +26,18 @@ class ContentView extends Component {
             noData: true,
             placement: 'left',
             showMessage: false,
-            userList: []
+            userList: [],
+            userInfo: {},
+            currentMessageObj: {
+              num: 0,
+              list: []
+            },
+            messageNum: 0,
+            bottom: -465,
+            right: -316
         };
         this.mimeStorage = new MimeStorage();
-        this.socket = null
+        this.socket = window.ENV.socket
     }
 
     componentDidMount() {
@@ -44,6 +51,9 @@ class ContentView extends Component {
         }
         if (sessionStorageToken) {
             const userInfo =  mimeStorage.getItem('userInfo');
+            this.setState({
+                userInfo: userInfo
+            })
             this._getMenuData();
             this._getUserList();
             this._socketCon(userInfo.id)
@@ -53,7 +63,7 @@ class ContentView extends Component {
 
     componentWillUnmount() {
         const userInfo = this.mimeStorage.getItem('userInfo');
-        if (userInfo) {
+        if (userInfo && this.socket) {
             this.socket.emit('userOutConnect', {userId: userInfo.id});
         }
         if(this.socket) {
@@ -66,7 +76,6 @@ class ContentView extends Component {
         this.setState({
             collapsed: !this.state.collapsed,
         });
-        console.log(this.menus)
     };
     /**
      * 获取菜单那数据
@@ -75,16 +84,15 @@ class ContentView extends Component {
      */
     async _getMenuData () {
         const mimeStorage = new MimeStorage();
-        const user = mimeStorage.getItem('userName');
+        const user = mimeStorage.getItem('userInfo');
         const { history, location } = this.props;
         if (!user) {
             history.replace('/login')
         }
-        const res = await $get('/authority/sysMenus?system=aggregation&user='+user+'', {}, 'admin')
-        const temp = this.dealMenus(res.data ? res.data : []);
-        mimeStorage.setItem({name: 'menus', value: temp, expires: 120 * 60 * 1000});
+        const res = mimeStorage.getItem('navs');
+        const temp = this.dealMenus(res ? res : []);
         this.setState({
-            menus: temp ? temp[0].childs : []
+            menus: temp ? temp: []
         })
     }
 
@@ -105,7 +113,6 @@ class ContentView extends Component {
         this.setState({
             userList: userList
         });
-        console.log(res.data.data)
     }
 
     /**
@@ -113,41 +120,10 @@ class ContentView extends Component {
      * @return {Promise<void>}
      */
     async _socketCon (id) {
-        let socket = null;
-        if (!window._socketObj) { // http://47.106.104.22:9001
-            socket = io('http://127.0.0.1:9001', { //指定后台的url地址
-                query : {
-                    id
-                }, //如果需要的话添加 path 路径以及其他可选项
-            });
-            window._socketObj = socket;
-        } else {
-            socket = window._socketObj
-        }
-        this.socket = socket;
-        socket.on('connect', () => {
-            socket.emit('userConnect', { userId: id });
-        });
-        socket.on('successLine', (data) => {
-            const user = this.mimeStorage.getItem('userName');
-            const args = {
-                message: `欢迎您: ${user}`,
-                description:
-                    `${parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}')}`,
-                duration: 2,
-            };
-            notification.open(args);
-        });
-        socket.on('broadcastLine', (data) => {
-            this._dealUserLine(data, 1)
-        });
-        socket.on('broadcastOutLine', (data) => {
-            console.log(data);
-            this._dealUserLine(data, 0)
-        });
-        socket.on('getMessage', (data) => {
-            console.log(data)
-        });
+        let socket = window._socketObj;
+        this.setState({
+            socket: socket
+        })
     }
 
     /**
@@ -239,7 +215,6 @@ class ContentView extends Component {
      * 消息队列
      */
     _myMessage = (msg) => {
-        console.log(msg);
         this.setState({
             visible: true,
         });
@@ -247,16 +222,20 @@ class ContentView extends Component {
     /**
      * 退出登录
      */
-    _myLoginOut = () => {
+    _myLoginOut = async () => {
         const { history, location } = this.props;
         const mimeStorage = new MimeStorage();
         const userInfo = this.mimeStorage.getItem('userInfo');
-        this.socket.emit('userOutConnect', {userId: userInfo.id});
+        const socket = this.state.socket
+        socket.emit('userOutConnect', {userId: userInfo.id}, (data) => {
+            console.log(data)
+        });
+        // this.socket.emit('userOutConnect', {userId: userInfo.id});
         mimeStorage.removeItem('userName');
         mimeStorage.removeItem('token');
         mimeStorage.removeItem('userInfo');
         window._socketObj = null;
-        history.replace('/login')
+        window.location.reload();
     };
     /**
      * OA系统
@@ -276,7 +255,10 @@ class ContentView extends Component {
      */
     _openMessage = () => {
         this.setState({
-            showMessage: true
+            showMessage: true,
+            bottom: -6,
+            right: 16,
+            messageNum: 0
         })
     };
 
@@ -284,12 +266,27 @@ class ContentView extends Component {
      * 关闭消息框
      */
     _closeMessage = (data) => {
+        console.log(data)
         this.setState({
-            showMessage: false
+            showMessage: false,
+            bottom: -465,
+            right: -316
+        })
+    };
+
+    /**
+     * 关闭消息框 {num: number, list: [{type: ''}]}
+     */
+    _setMessageNum = (data) => {
+        console.log(data);
+        this.setState({
+            messageNum: data.num
         })
     };
 
     render() {
+        const user = this.state.userInfo;
+        const { bottom, right, currentMessageObj, messageNum} = this.state
         return (
                 <Layout>
                     <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
@@ -298,20 +295,24 @@ class ContentView extends Component {
                         </Scrollbars>
                     </Sider>
                     <Layout>
-                        <Header style={{ background: '#fff', padding: 0, height: '48px', lineHeight: '48px', display: 'flex', justifyContent: 'space-between' }}>
+                        <Header style={{ background: '#fff', padding: 0, height: '55px', lineHeight: '55px', display: 'flex', justifyContent: 'space-between' }}>
                             <Icon
                                 className="trigger"
                                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                                 style={{marginTop: '18px'}}
                                 onClick={this.toggle}
                             />
-                            <Dropdown overlay={this.renderMenu} trigger={['click']}>
+                            <div>
+                                <span style={{marginRight: '8px', fontSize: '16px', cursor: 'pointer'}}>{user.name}</span>
+                                <Dropdown overlay={this.renderMenu} trigger={['click']}>
                                 <span style={{ marginRight: 24 }}>
                                   <Badge count={1}>
                                     <Avatar shape="circle" size={'small'} icon="user" style={{verticalAlign: 'middle'}} />
                                   </Badge>
                                 </span>
-                            </Dropdown>
+                                </Dropdown>
+                            </div>
+
                         </Header>
                         <Content style={{
                             width: '100%',
@@ -338,10 +339,11 @@ class ContentView extends Component {
                             <ListNews></ListNews>
                         </Scrollbars>
                     </Drawer>
-                    {this.state.showMessage ?
-                        <Chart socket={this.socket} closeMessage={this._closeMessage} parent={this} userList={this.state.userList}></Chart> : <Icon type="message" onClick={this._openMessage} style={{ fontSize: '24px', color: '#08c', position: 'fixed', right: '16px', bottom: '16px',zIndex: 500 }} />
-                    }
-
+                    <div style={{position: 'fixed', bottom: bottom,right: right}}>
+                            <SimpleChart closeMessage={() => this._closeMessage()} currentMessageNum={messageNum} setMessageNum={(data) => this._setMessageNum(data)}></SimpleChart>
+                            <Icon type="message" onClick={this._openMessage} style={{ fontSize: '28px', color: '#08c', position: 'fixed', right: '16px', bottom: '16px',zIndex: 500 }} />
+                            <Badge count={messageNum ? messageNum : ''} style={{ color: '#fff', position: 'fixed', right: '8px', bottom: '32px',zIndex: 500 }}></Badge>
+                    </div>
                 </Layout>
         );
     }

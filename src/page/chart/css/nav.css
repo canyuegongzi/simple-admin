@@ -1,0 +1,73 @@
+/**
+    导航
+ */
+#tab-bar.demo {
+    display: flex;
+    flex-direction: column;
+}
+#tab-bar .demoName {
+    height: 40px;
+}
+#tab-bar .demo-preview-item .am-tab-bar {
+    background-color: white;
+}
+.am-tab-bar-bar .am-tab-bar-tab {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+}
+.am-tab-bar-bar{
+    display: flex;
+    height: 48px;
+}
+.am-tab-bar-bar .am-tab-bar-tab {
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 16px;
+}
+.am-tab-bar-bar .am-tab-bar-tab .am-tab-bar-tab-icon {
+    width: 24px;
+    height: 23px;
+}
+.am-tab-bar-bar .am-tab-bar-tab .am-tab-bar-tab-icon .icon-img{
+    width: 100%;
+    height: 100%;
+}
+/**
+    导航
+ */
+.ant-tabs-nav .ant-tabs-tab .anticon {
+    margin-right: 0px !important;
+}
+.ant-tabs-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.ant-tabs .ant-tabs-small-bar .ant-tabs-tab span {
+    display: flex;
+    flex-direction: column;
+}
+.ant-tabs-ink-bar {
+    left: 25px !important;
+}

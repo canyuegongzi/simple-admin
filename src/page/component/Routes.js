@@ -8,7 +8,7 @@ export default () => (
     <HashRouter>
         <Switch>
             <Route exact path="/login" component={WrappedNormalLoginForm} />
-            <Route path="/" component={ContentView} />
+            <Route path="/" component={ContentView}  onEnter={isLogin}/>
         </Switch>
     </ HashRouter>
 )
@@ -17,6 +17,7 @@ export const isLogin = (nextState, replaceState) => {
     const mimeStorage = new MimeStorage();
     let sessionStorageToken = mimeStorage.getItem('token') || sessionStorage.getItem('token');
     if (sessionStorageToken === "null" || !sessionStorageToken) {
-        replaceState('/login')
+        const url = window.location.origin + window.location.pathname;
+        window.location.href = window.ENV.domain + window.ENV.casDomain + '?redirectUrl=' + url;
     }
 };

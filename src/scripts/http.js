@@ -93,16 +93,14 @@ export const $delete = (path, data = {}, server = 'wbw') => {
 function getBaseUrl (name) {
     switch (name) {
         case 'wbw':
-            // return 'http://127.0.0.1:8881';
-            return 'http://47.106.104.22:8881';
+            return 'http://127.0.0.1:8881';
         case 'admin':
-            // return 'http://127.0.0.1:8881';
-            return 'http://47.106.104.22:8881';
+            return 'http://127.0.0.1:8881';
         case 'chart':
-            // return 'http://127.0.0.1:8884';
-            return 'http://47.106.104.22:8884';
+            return 'http://127.0.0.1:8884';
+        case 'bsp':
+            return 'http://127.0.0.1:8884';
         default:
-            // return 'http://127.0.0.1:8881';
-            return 'http://47.106.104.22:8881';
+            return 'http://127.0.0.1:8881';
     }
 }

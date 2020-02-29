@@ -4,5 +4,10 @@ module.exports = override(
             libraryName: 'antd',
             libraryDirectory: 'es',
             style: 'css',
-       }),
+       },
+          {
+              libraryName: 'antd-mobile',
+              libraryDirectory: 'es',
+              style: 'css',
+          }),
 );
